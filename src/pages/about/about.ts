@@ -5,6 +5,8 @@ import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { AboutService } from './about.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastService } from '../../services/toast.service';
+import { ItemSliding } from 'ionic-angular';
+
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html'
@@ -31,7 +33,7 @@ export class AboutPage implements OnDestroy {
     this.photoViewer.show(item.nativeURL, item.name, { share: true });
   }
 
-  deleteItem(item: Entry) {
+  deleteItem(item: Entry, index: number, slider: ItemSliding) {
     this.toast
       .confirmAction(`Delete ${item.name}`, `Confirm Delete`, ['Yes', 'No'])
       .then((ok) => {
@@ -45,6 +47,7 @@ export class AboutPage implements OnDestroy {
         }
       }, (cancel) => {
       });
+      slider.close();
 
   }
 
