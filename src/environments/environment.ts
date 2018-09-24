@@ -4,6 +4,7 @@ export const environment = {
     },
     unsplashApi: {
         accessKey : `52d46a2276ca5fca3f40a72e8aed109e682b21a83c38cd3372cabd8d1e8b9c40`,
-        secretKey: `51191bbb958d123a6c3ed6eb22d411fd87798e43dc5d5aea65d1b341e12a796e`
+        secretKey: `51191bbb958d123a6c3ed6eb22d411fd87798e43dc5d5aea65d1b341e12a796e`,
+        url:`https://api.unsplash.com/`
     }
 }

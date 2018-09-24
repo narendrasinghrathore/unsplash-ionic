@@ -1,11 +1,21 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      About
+      Downloads
+      <ion-badge item-end>{{totalItemsCount}}</ion-badge>
     </ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-
+  <ion-list>
+    <ion-item-sliding (ionSwipe)="delete(item)" *ngFor="let item of list;" >
+      <ion-item>
+        <p>{{item.name}}</p>
+        <button ion-button clear item-end (click)="showImage(item);">View</button>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="danger" expandable (click)="deleteItem(item,index)">Delete</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>
