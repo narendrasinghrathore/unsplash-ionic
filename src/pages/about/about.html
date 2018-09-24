@@ -7,9 +7,12 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-list>
-    <ion-item-sliding #slidingItem  *ngFor="let item of list;" >
+  <ion-list *ngIf="totalItemsCount > 0">
+    <ion-item-sliding #slidingItem *ngFor="let item of list;">
       <ion-item>
+        <!-- <ion-thumbnail *ngIf="item.nativeURL" item-start>
+          <img [src]="item.nativeURL" [alt]="item.name">
+        </ion-thumbnail> -->
         <p>{{item.name}}</p>
         <button ion-button clear item-end (click)="showImage(item);">View</button>
       </ion-item>
@@ -18,4 +21,7 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+  <p *ngIf="totalItemsCount === 0">
+      <ion-icon name="information-circle"></ion-icon> Restart application, if file(s) not showing after download.
+  </p>
 </ion-content>

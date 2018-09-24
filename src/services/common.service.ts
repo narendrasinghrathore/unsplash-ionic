@@ -72,10 +72,8 @@ export class CommonService {
   }
 
   public sanitizeUrl(data: any, type?: string): any {
-    console.log(`Was called for ${data}`);
-    const returnData = data ? this.sanitizer.bypassSecurityTrustUrl(data) : '';
-    console.log(returnData);
-    return returnData;
+    return data ? this.sanitizer.bypassSecurityTrustUrl(data) : '';
+    
   }
 
   public ObjectToString(obj: object) {
