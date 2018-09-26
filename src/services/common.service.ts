@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import * as moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AboutService } from '../pages/about/about.service';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { FilePath } from '@ionic-native/file-path';
+import { File } from '@ionic-native/file';
+
+import { ToastService } from '../services/toast.service';
+import { DownloadService } from '../pages/download/download.service';
 @Injectable()
 export class CommonService {
 
@@ -28,10 +33,10 @@ export class CommonService {
 
         break;
       case 1:
-        // About tab / Download tab
-        this.aboutService.readFiles();
         break;
       case 2:
+        // About tab / Download tab
+        this.downloadService.readFiles();
         break;
 
       default:
@@ -39,7 +44,9 @@ export class CommonService {
     }
   }
 
-  constructor(private sanitizer: DomSanitizer, private aboutService: AboutService) {
+  constructor(private sanitizer: DomSanitizer, private downloadService: DownloadService,
+    private fileTransfer: FileTransfer, private filePath: FilePath, private file: File,
+    private toast: ToastService) {
     setInterval(() => {
       this.startTimer();
     });
@@ -73,7 +80,7 @@ export class CommonService {
 
   public sanitizeUrl(data: any, type?: string): any {
     return data ? this.sanitizer.bypassSecurityTrustUrl(data) : '';
-    
+
   }
 
   public ObjectToString(obj: object) {
@@ -93,6 +100,23 @@ export class CommonService {
       } else {
         reject(null);
       }
+    });
+  }
+
+  savePhoto(imageUrl: string, postFix: string) {
+    return new Promise((resolve, reject) => {
+      const imageFile = this.fileTransfer.create();
+      const imageFileName = imageUrl.substring(imageUrl.indexOf('com/') + 4, imageUrl.indexOf('?')) + `_${postFix}_.jpg`;
+      const imageFilePath = this.file.externalDataDirectory + '/Downloads/' + imageFileName;
+
+
+      imageFile.download(imageUrl, imageFilePath).then((done) => {
+        this.toast.displayMsg(`File: ${imageFileName} saved to ${imageFilePath} folder`);
+        resolve();
+      }).catch((err) => {
+        this.toast.displayMsg(`Got some error.`);
+        reject(err);
+      });
     });
   }
 }

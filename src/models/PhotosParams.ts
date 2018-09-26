@@ -10,3 +10,10 @@ export enum PhotoOrderBy {
     Oldest = 'oldest',
     Popular = 'popular'
 }
+
+
+export enum SwitchCase {
+    default = 'default',
+    search = 'search'
+
+}

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { File, Entry } from '@ionic-native/file';
 import { Subject } from 'rxjs/Subject';
-import { SELECT_VALUE_ACCESSOR } from '@angular/forms/src/directives/select_control_value_accessor';
 @Injectable()
-export class AboutService {
+export class DownloadService {
     /**
      *
      */

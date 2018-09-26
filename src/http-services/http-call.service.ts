@@ -7,6 +7,7 @@ import { SearchPhotos } from '../models/SearchPhotos';
 import { CommonService } from '../services/common.service';
 import { PhotosParam } from '../models/PhotosParams';
 import { of } from 'rxjs/observable/of';
+import { SearchParam } from '../models/SearchParams';
 @Injectable()
 export class HttpCallService implements OnInit {
     basePhotoUrl: string;
@@ -40,12 +41,9 @@ export class HttpCallService implements OnInit {
      */
     getPhotoList(data: PhotosParam): Observable<GetPhotos> {
         let url = this.randomPhotos;
-        console.log(this.randomPhotos, this.photoSearch)
         if (data) {
             url += this.commonService.ObjectToString(data);
         }
-        console.log(url);
-        // return of();
         return this.httpService.http({
             method: 'GET',
             url
@@ -60,7 +58,7 @@ export class HttpCallService implements OnInit {
      * orientation	Filter search results by photo orientation. Valid values are landscape, portrait, and squarish
      * * @param term '?page=1&query=office&per_page=20'
      */
-    searchPhotos(term: SearchPhotos): Observable<SearchPhotos> {
+    searchPhotos(term: SearchParam): Observable<SearchPhotos> {
         let url = this.photoSearch;
         if (term) {
             url += this.commonService.ObjectToString(term);

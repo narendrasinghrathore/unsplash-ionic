@@ -2,17 +2,17 @@ import { Component, OnDestroy } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Entry } from '@ionic-native/file';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
-import { AboutService } from './about.service';
+import { DownloadService } from './download.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastService } from '../../services/toast.service';
 import { ItemSliding } from 'ionic-angular';
 import { CommonService } from '../../services/common.service';
 import { File } from '@ionic-native/file';
 @Component({
-  selector: 'page-about',
-  templateUrl: 'about.html'
+  selector: 'page-download',
+  templateUrl: 'download.html'
 })
-export class AboutPage implements OnDestroy {
+export class DownloadPage implements OnDestroy {
   getFiles$: Subscription;
   totalItemsCount = 0;
 
@@ -23,18 +23,10 @@ export class AboutPage implements OnDestroy {
   list: Entry[];
 
   constructor(public navCtrl: NavController, private photoViewer: PhotoViewer,
-    private aboutService: AboutService, private toast: ToastService, private commonService: CommonService,
+    private downloadService: DownloadService, private toast: ToastService, private commonService: CommonService,
     private file: File) {
-    this.getFiles$ = this.aboutService.readFileEvent.subscribe((data) => {
+    this.getFiles$ = this.downloadService.readFileEvent.subscribe((data) => {
       let tempData = data.reverse();
-      // tempData.map((item) => {
-      //   item['dataURL'] = this.commonService.sanitizeUrl(
-      //     this.file.resolveLocalFilesystemUrl(item.nativeURL).then((fl) => {
-      //       return fl.toInternalURL();
-      //     })
-      //   );
-      //   console.log(item['dataURL']);
-      // });
       this.list = tempData;
       this.totalItemsCount = this.list.length;
     });
@@ -49,7 +41,7 @@ export class AboutPage implements OnDestroy {
       .confirmAction(`Delete ${item.name}`, `Confirm Delete`, ['Yes', 'No'])
       .then((ok) => {
         if (ok == 1) {
-          this.aboutService.deleteFile(item, (ok) => {
+          this.downloadService.deleteFile(item, (ok) => {
             this.toast.displayMsg(`File deleted.`);
 
           }, (err) => {

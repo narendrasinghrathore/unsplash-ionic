@@ -5,16 +5,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import {AuthInterceptor} from '../auth/auth-interceptor.service';
+import { AuthInterceptor } from '../auth/auth-interceptor.service';
 
 
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler, Content } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
+import { DownloadPage } from '../pages/download/download';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
+import { SearchPage } from '../pages/search/search';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -37,16 +38,19 @@ import { ToastService } from '../services/toast.service';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { PermissionsService } from '../services/permissions.service';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
-import { AboutService } from '../pages/about/about.service';
+import { DownloadService } from '../pages/download/download.service';
 import { Dialogs } from '@ionic-native/dialogs';
+import { HomeService } from '../pages/home/home.service';
+import { SearchService } from '../pages/search/search.service';
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
+    DownloadPage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    SearchPage
   ],
   imports: [
     BrowserModule,
@@ -57,9 +61,10 @@ import { Dialogs } from '@ionic-native/dialogs';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
+    DownloadPage,
     ContactPage,
     HomePage,
+    SearchPage,
     TabsPage
   ],
   providers: [
@@ -71,20 +76,23 @@ import { Dialogs } from '@ionic-native/dialogs';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    },    
+    },
     CommonService,
     HttpCustomService,
     HttpCallService,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     ToastService,
-    AboutService,
+    DownloadService,
     FilePath,
     FileTransfer,
     File,
     Diagnostic,
     PermissionsService,
     PhotoViewer,
-    Dialogs
+    Dialogs,
+    HomeService,
+    Content,
+    SearchService
   ]
 })
-export class AppModule {}
+export class AppModule { }
