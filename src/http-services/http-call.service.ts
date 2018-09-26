@@ -4,9 +4,7 @@ import { Environment } from '../services/constant.service';
 import { Observable } from 'rxjs/Observable';
 import { GetPhotos } from '../models/GetPhotos';
 import { SearchPhotos } from '../models/SearchPhotos';
-import { CommonService } from '../services/common.service';
 import { PhotosParam } from '../models/PhotosParams';
-import { of } from 'rxjs/observable/of';
 import { SearchParam } from '../models/SearchParams';
 @Injectable()
 export class HttpCallService implements OnInit {
@@ -16,7 +14,7 @@ export class HttpCallService implements OnInit {
 
 
 
-    constructor(private httpService: HttpCustomService, private commonService: CommonService, private env: Environment) {
+    constructor(private httpService: HttpCustomService, private env: Environment) {
         this.buildUrl();
 
     }
@@ -33,6 +31,12 @@ export class HttpCallService implements OnInit {
         this.photoSearch = this.basePhotoUrl + 'search/photos?';
     }
 
+    public ObjectToString(obj: object) {
+        return Object.keys(obj).map((value) => {
+            return `${value}=${obj[value]}`;
+        }).join('&');
+    }
+
 
 
     /**
@@ -42,7 +46,7 @@ export class HttpCallService implements OnInit {
     getPhotoList(data: PhotosParam): Observable<GetPhotos> {
         let url = this.randomPhotos;
         if (data) {
-            url += this.commonService.ObjectToString(data);
+            url += this.ObjectToString(data);
         }
         return this.httpService.http({
             method: 'GET',
@@ -61,7 +65,7 @@ export class HttpCallService implements OnInit {
     searchPhotos(term: SearchParam): Observable<SearchPhotos> {
         let url = this.photoSearch;
         if (term) {
-            url += this.commonService.ObjectToString(term);
+            url += this.ObjectToString(term);
         }
         return this.httpService.http({
             method: 'GET',

@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { NavController, FabContainer } from 'ionic-angular';
 import { HttpCallService } from '../../http-services/http-call.service';
 import { PhotoOrderBy, SwitchCase } from '../../models/PhotosParams';
 import { FileTransfer } from '@ionic-native/file-transfer';
@@ -9,35 +9,44 @@ import { ToastService } from '../../services/toast.service';
 import { PermissionsService } from '../../services/permissions.service';
 import { HomeService } from './home.service';
 import { Content } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit, AfterViewInit {
+export class HomePage implements OnInit, OnDestroy {
+ 
+  @ViewChild(Content) content: Content;
   pageTitle = 'splashun';
   latest = PhotoOrderBy;
   photosList = [];
 
+  initEvent : Subscription;
+
+
+
   pageNumber = 1;
 
   searchTerm = '';
-
-  @ViewChild(Content) content: Content;
 
 
   constructor(public navCtrl: NavController, private http: HttpCallService,
     private fileTransfer: FileTransfer, private filePath: FilePath, private file: File,
     private toast: ToastService, private permissionService: PermissionsService, private homeService: HomeService) {
 
+    // this.initEvent = this.homeService.componentInitEvent.subscribe(() => {
+    //   this.scrollToTop();
+    // });
+
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop();
   }
 
   ngOnInit() {
-  }
-  ngAfterViewInit() {
-    //
-    this.content.ionScrollEnd.subscribe((data) => {
-      console.log(data);
-    })
+    this.getPhotos();
   }
 
   private getAccess() {
@@ -61,25 +70,23 @@ export class HomePage implements OnInit, AfterViewInit {
       (data) => {
         if (data['body']) {
           this.photosList = data['body'];
-          console.log(this.photosList)
         }
       }, (err) => {
         console.log(err);
       });
   }
 
-  savePhoto(imageUrl: string, postFix: string) {
-    const imageFile = this.fileTransfer.create();
-    const imageFileName = imageUrl.substring(imageUrl.indexOf('com/') + 4, imageUrl.indexOf('?')) + `_${postFix}_.jpg`;
-    const imageFilePath = this.file.externalDataDirectory + '/Downloads/' + imageFileName;
+  savePhoto(imageUrl: string, postFix: string, fab: FabContainer) {
+    fab.close();
+    this.homeService.saveFile(imageUrl, postFix);
+  }
+
+  closeFab(fab: FabContainer) {
+    this.homeService.showInfo(`Blur event on Fab called.`);
+  }
 
 
-    imageFile.download(imageUrl, imageFilePath).then((done) => {
-      this.toast.displayMsg(`File: ${imageFileName} saved to ${imageFilePath} folder`);
-    }).catch((err) => {
-      this.toast.displayMsg(`Got some error.`);
-      console.log(err);
-    });
-
+  ngOnDestroy(): void {
+    this.initEvent.unsubscribe();
   }
 }

@@ -8,7 +8,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../auth/auth-interceptor.service';
 
 
-import { IonicApp, IonicModule, IonicErrorHandler, Content } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler, Content, LoadingController } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { DownloadPage } from '../pages/download/download';
@@ -42,6 +42,7 @@ import { DownloadService } from '../pages/download/download.service';
 import { Dialogs } from '@ionic-native/dialogs';
 import { HomeService } from '../pages/home/home.service';
 import { SearchService } from '../pages/search/search.service';
+import { SaveFileService } from '../services/savefile.service';
 
 @NgModule({
   declarations: [
@@ -88,11 +89,13 @@ import { SearchService } from '../pages/search/search.service';
     File,
     Diagnostic,
     PermissionsService,
+    SaveFileService,
     PhotoViewer,
     Dialogs,
     HomeService,
     Content,
-    SearchService
+    SearchService,
+    LoadingController
   ]
 })
 export class AppModule { }

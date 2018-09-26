@@ -1,38 +1,37 @@
 <ion-content>
-  Photos
   <ion-card *ngFor="let photo of photosList">
     <ion-item>
       <ion-avatar item-start>
         <img [src]="photo?.user.profile_image.small">
       </ion-avatar>
-      <h2>{{photo?.user.name}}</h2>
-      <p>{{photo?.created_at | date}}</p>
+      <h2> {{photo?.user.name}}</h2>
+      <p>
+        <ion-icon name="calendar"></ion-icon>
+        {{photo?.created_at | date}}
+      </p>
     </ion-item>
     <img src={{photo?.urls.thumb}} />
     <ion-row>
       <ion-col>
         <button ion-button icon-start clear small>
           <ion-icon name="thumbs-up"></ion-icon>
-          <div>{{photo?.likes}}</div>
+          <ion-badge>
+            {{photo?.likes}}
+          </ion-badge>
         </button>
       </ion-col>
       <ion-col>
-        <button ion-button icon-start clear small>
-          <ion-icon name="text"></ion-icon>
-          <div>{{photo?.description}}</div>
-        </button>
-      </ion-col>
-      <ion-col>
-        <ion-fab right bottom>
+        <ion-fab right bottom #fab (blur)="closeFab(fab);">
           <button ion-fab color="light">
-            <ion-icon name="arrow-dropup"></ion-icon>
+            <ion-icon name="download"></ion-icon>
           </button>
           <ion-fab-list side="top">
-            <button ion-fab (click)="savePhoto(photo.urls.full, 'full')">full</button>
-            <button ion-fab (click)="savePhoto(photo.urls.raw,'raw')">raw</button>
-            <button ion-fab (click)="savePhoto(photo.urls.regular,'regular')">regular</button>
-            <button ion-fab (click)="savePhoto(photo.urls.small,'small')">
-              <ion-icon name="logo-googleplus"></ion-icon>
+            <button ion-fab (click)="savePhoto(photo.urls.full, 'full',fab)">full</button>
+            <button ion-fab (click)="savePhoto(photo.urls.raw,'raw',fab)">raw</button>
+            <button ion-fab (click)="savePhoto(photo.urls.regular,'regular',fab)">regular</button>
+            <button ion-fab (click)="savePhoto(photo.urls.small,'small',fab)">
+              <!-- <ion-icon name="logo-googleplus"></ion-icon> -->
+              small
             </button>
           </ion-fab-list>
         </ion-fab>

@@ -8,6 +8,8 @@ import { File } from '@ionic-native/file';
 
 import { ToastService } from '../services/toast.service';
 import { DownloadService } from '../pages/download/download.service';
+import { HomeService } from '../pages/home/home.service';
+import { SearchService } from '../pages/search/search.service';
 @Injectable()
 export class CommonService {
 
@@ -30,9 +32,10 @@ export class CommonService {
   tabChange(indexNumber: number) {
     switch (indexNumber) {
       case 0:
-
+        this.homeService.tabEvent();
         break;
       case 1:
+      this.searchService.tabEvent();
         break;
       case 2:
         // About tab / Download tab
@@ -46,7 +49,7 @@ export class CommonService {
 
   constructor(private sanitizer: DomSanitizer, private downloadService: DownloadService,
     private fileTransfer: FileTransfer, private filePath: FilePath, private file: File,
-    private toast: ToastService) {
+    private toast: ToastService, private homeService: HomeService, private searchService: SearchService) {
     setInterval(() => {
       this.startTimer();
     });
@@ -83,11 +86,7 @@ export class CommonService {
 
   }
 
-  public ObjectToString(obj: object) {
-    return Object.keys(obj).map((value, index, array) => {
-      return `${value}=${obj[value]}`;
-    }).join('&');
-  }
+
 
   public getBase64Data(data): Promise<any> {
     return new Promise((resolve, reject) => {

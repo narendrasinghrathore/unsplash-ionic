@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, FabContainer } from 'ionic-angular';
 import { HttpCallService } from '../../http-services/http-call.service';
 import { PhotoOrderBy, SwitchCase } from '../../models/PhotosParams';
 import { GetPhotos } from '../../models/GetPhotos';
@@ -31,12 +31,12 @@ export class SearchPage {
 
   }
 
-  savePhoto(imageUrl: string, postFix: string) {
+  savePhoto(imageUrl: string, postFix: string, fab: FabContainer) {
+    fab.close();
     this.searchService.saveFile(imageUrl, postFix);
   }
 
   searchImage(pageNumber: number = 1, callback?: any) {
-    console.log('pageNumber', pageNumber);
     let term = 'Abstract';
     term = this.searchTerm.length > 0 ? this.searchTerm : term;
 
@@ -72,8 +72,11 @@ export class SearchPage {
     this.searchImage(this.pageNumber, (list) => {
       event.complete();
       this.searchList.push(...list);
-      console.log('Event complete: ', this.searchList);
     });
 
+  }
+
+  closeFab(fab: FabContainer) {
+    this.searchService.showInfo(`Blur event on Fab called.`);
   }
 }
