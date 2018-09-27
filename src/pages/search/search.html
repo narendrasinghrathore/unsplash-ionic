@@ -34,12 +34,17 @@
                 <ion-icon name="download"></ion-icon>
               </button>
               <ion-fab-list side="top">
-                <button ion-fab (click)="savePhoto(photo?.urls?.full, 'full',fab)">full</button>
-                <button ion-fab (click)="savePhoto(photo?.urls?.raw,'raw',fab)">raw</button>
-                <button ion-fab (click)="savePhoto(photo?.urls?.regular,'regular',fab)">regular</button>
-                <button ion-fab (click)="savePhoto(photo?.urls?.small,'small',fab)">
-                  <!-- <ion-icon name="logo-googleplus"></ion-icon> -->
-                  small
+                <button class="ion-icon-custom" (click)="savePhoto(photo.urls.full, 'full',fab)">
+                  FULL HD
+                </button>
+                <button class="ion-icon-custom" (click)="savePhoto(photo.urls.raw,'raw',fab)">
+                  RAW
+                </button>
+                <button class="ion-icon-custom" (click)="savePhoto(photo.urls.regular,'regular',fab)">
+                  HD+
+                </button>
+                <button class="ion-icon-custom" (click)="savePhoto(photo.urls.small,'small',fab)">
+                  HD
                 </button>
               </ion-fab-list>
             </ion-fab>

@@ -10,8 +10,9 @@ export class ToastService {
     displayMsg(msg: string) {
         let toast = this.toastCtrl.create({
             message: msg,
-            duration: 3000,
-            position: 'bottom'
+            duration: 1500,
+            position: 'bottom',
+            dismissOnPageChange: true
         });
 
         toast.onDidDismiss(() => {

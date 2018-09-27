@@ -1,32 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { catchError, tap , finalize  } from 'rxjs/operators';
+import { catchError, tap, finalize } from 'rxjs/operators';
 // import { of } from 'rxjs/observable/of';
 // import { CommonService } from '../services/common.service';  
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { HttpErrorResponse } from '@angular/common/http';
-import { LoadingController } from 'ionic-angular';
+import { AnimationLoaderService } from '../services/animation-loader.service'
 @Injectable()
 export class HttpCustomService {
 
-  constructor(private httpClient: HttpClient, public loadingCtrl: LoadingController) {
-    // private commonService: CommonService
+  constructor(private httpClient: HttpClient, public loadingCtrl: AnimationLoaderService) {
 
   }
 
   http(config: any): Observable<any> {
-    const loader = this.loadingCtrl.create({
-      content: `<img src="../assets/imgs/loader.gif" width="50" />`,
-      spinner: 'hide'
-    });
-    loader.present();
+    this.loadingCtrl.spin();
     const req = new HttpRequest(config.method, config.url, config.body);
     return this.httpClient.request(req).pipe(
       tap(data => { }),
       catchError((err) => this.handleError(err)),
       finalize(() => {
-        loader.dismissAll();
+        this.loadingCtrl.stop();
       })
     );
   }
@@ -62,7 +57,7 @@ export class HttpCustomService {
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 401) {
-      
+
     }
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

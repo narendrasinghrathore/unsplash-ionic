@@ -43,6 +43,7 @@ import { Dialogs } from '@ionic-native/dialogs';
 import { HomeService } from '../pages/home/home.service';
 import { SearchService } from '../pages/search/search.service';
 import { SaveFileService } from '../services/savefile.service';
+import { AnimationLoaderService } from '../services/animation-loader.service';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { SaveFileService } from '../services/savefile.service';
     HomeService,
     Content,
     SearchService,
-    LoadingController
+    LoadingController,
+    AnimationLoaderService
   ]
 })
 export class AppModule { }
