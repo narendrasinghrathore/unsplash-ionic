@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NavController, FabContainer } from 'ionic-angular';
 import { HttpCallService } from '../../http-services/http-call.service';
-import { PhotoOrderBy, SwitchCase } from '../../models/PhotosParams';
+import { PhotoOrderBy } from '../../models/PhotosParams';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
@@ -16,13 +16,13 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: 'home.html'
 })
 export class HomePage implements OnInit, OnDestroy {
- 
+
   @ViewChild(Content) content: Content;
   pageTitle = 'splashun';
-  latest = PhotoOrderBy;
+  orderByEnum = PhotoOrderBy
   photosList = [];
 
-  initEvent : Subscription;
+  initEvent: Subscription;
 
 
 
@@ -30,15 +30,23 @@ export class HomePage implements OnInit, OnDestroy {
 
   searchTerm = '';
 
+  orderByOptions = [];
+
+  selectedOption: PhotoOrderBy;
+  selectOptions: any;
 
   constructor(public navCtrl: NavController, private http: HttpCallService,
     private fileTransfer: FileTransfer, private filePath: FilePath, private file: File,
     private toast: ToastService, private permissionService: PermissionsService, private homeService: HomeService) {
 
-    // this.initEvent = this.homeService.componentInitEvent.subscribe(() => {
-    //   this.scrollToTop();
-    // });
+    this.orderByOptions.push(this.orderByEnum.Latest);
+    this.orderByOptions.push(this.orderByEnum.Oldest);
+    this.orderByOptions.push(this.orderByEnum.Popular);
+    this.selectedOption = this.orderByEnum.Latest;
 
+    this.selectOptions = {
+      title: 'Order By'
+    };
   }
 
   scrollToTop() {
@@ -61,16 +69,23 @@ export class HomePage implements OnInit, OnDestroy {
     return meReturn;
   }
 
-  getPhotos() {
+  getPhotos(pageNumber: number = 1, callback?: any) {
     this.http.getPhotoList({
-      order_by: this.latest.Latest,
+      order_by: this.selectedOption,
       per_page: 10,
-      page: 1
+      page: pageNumber
     }).subscribe(
       (data) => {
-        if (data['body']) {
-          this.photosList = data['body'];
+        if (data['type'] === 4) {
+          let list = data['body'];
+          if (pageNumber === 1) {
+            this.photosList = list;
+          }
+          if (pageNumber > 1) {
+            callback ? callback(list) : null;
+          }
         }
+
       }, (err) => {
         console.log(err);
       });
@@ -85,8 +100,22 @@ export class HomePage implements OnInit, OnDestroy {
     this.homeService.showInfo(`Blur event on Fab called.`);
   }
 
+  doInfinite(event) {
+    this.pageNumber++;
+    this.getPhotos(this.pageNumber, (list) => {
+      event.complete();
+      this.photosList.push(...list);
+    });
+
+  }
+
 
   ngOnDestroy(): void {
     this.initEvent.unsubscribe();
+  }
+
+  onOrderBy(value: any) {
+    this.selectedOption = value;
+    this.getPhotos(1);
   }
 }

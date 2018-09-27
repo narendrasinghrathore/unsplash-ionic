@@ -42,7 +42,7 @@ export class SearchPage {
 
     this.searchService.searchImages({
       page: pageNumber,
-      per_page: 5,
+      per_page: 10,
       query: term
     }).subscribe((data) => {
       if (data['type'] === 4) {

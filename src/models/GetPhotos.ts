@@ -66,3 +66,10 @@ export interface GetPhotos {
     slug?: any;
     user: User;
 }
+
+
+export enum OrderBy{
+    Latest = 'latest',
+    Oldest = 'oldest',
+    Popular = 'popular'
+}

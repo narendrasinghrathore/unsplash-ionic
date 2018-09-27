@@ -1,46 +1,64 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <ion-select [selectOptions]="selectOptions" (ionChange)="onOrderBy($event)" [(ngModel)]="selectedOption" okText="Okay" cancelText="Dismiss">
+        <ion-option *ngFor="let item of orderByOptions" [value]="item">
+          {{item | uppercase}}
+        </ion-option>
+      </ion-select>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
 <ion-content>
-  <ion-card *ngFor="let photo of photosList">
-    <ion-item>
-      <ion-avatar item-start>
-        <img [src]="photo?.user.profile_image.small">
-      </ion-avatar>
-      <h2> {{photo?.user.name}}</h2>
-      <p>
-        <ion-icon name="calendar"></ion-icon>
-        {{photo?.created_at | date}}
-      </p>
+  <ion-list>
+    <ion-item class="ion-list-item-home" *ngFor="let photo of photosList">
+      <ion-card>
+        <ion-item>
+          <ion-avatar item-start>
+            <img [src]="photo?.user.profile_image.small">
+          </ion-avatar>
+          <h2> {{photo?.user.name}}</h2>
+          <p>
+            <ion-icon name="calendar"></ion-icon>
+            {{photo?.created_at | date}}
+          </p>
+        </ion-item>
+        <img src={{photo?.urls.thumb}} />
+        <ion-row>
+          <ion-col>
+            <button ion-button icon-start clear small>
+              <ion-icon name="thumbs-up"></ion-icon>
+              <ion-badge>
+                {{photo?.likes}}
+              </ion-badge>
+            </button>
+          </ion-col>
+          <ion-col>
+            <ion-fab right bottom #fab (blur)="closeFab(fab);">
+              <button ion-fab color="light">
+                <ion-icon name="download"></ion-icon>
+              </button>
+              <ion-fab-list side="top">
+                <button class="ion-icon-custom" (click)="savePhoto(photo.urls.full, 'full',fab)">
+                  FULL HD
+                </button>
+                <button class="ion-icon-custom" (click)="savePhoto(photo.urls.raw,'raw',fab)">
+                  RAW
+                </button>
+                <button class="ion-icon-custom" (click)="savePhoto(photo.urls.regular,'regular',fab)">
+                  HD+
+                </button>
+                <button class="ion-icon-custom" (click)="savePhoto(photo.urls.small,'small',fab)">
+                  HD
+                </button>
+              </ion-fab-list>
+            </ion-fab>
+          </ion-col>
+        </ion-row>
+      </ion-card>
     </ion-item>
-    <img src={{photo?.urls.thumb}} />
-    <ion-row>
-      <ion-col>
-        <button ion-button icon-start clear small>
-          <ion-icon name="thumbs-up"></ion-icon>
-          <ion-badge>
-            {{photo?.likes}}
-          </ion-badge>
-        </button>
-      </ion-col>
-      <ion-col>
-        <ion-fab right bottom #fab (blur)="closeFab(fab);">
-          <button ion-fab color="light">
-            <ion-icon name="download"></ion-icon>
-          </button>
-          <ion-fab-list side="top">
-            <button class="ion-icon-custom" (click)="savePhoto(photo.urls.full, 'full',fab)">
-              FULL HD
-            </button>
-            <button class="ion-icon-custom" (click)="savePhoto(photo.urls.raw,'raw',fab)">
-              RAW
-            </button>
-            <button class="ion-icon-custom" (click)="savePhoto(photo.urls.regular,'regular',fab)">
-              HD+
-            </button>
-            <button class="ion-icon-custom" (click)="savePhoto(photo.urls.small,'small',fab)">
-              HD
-            </button>
-          </ion-fab-list>
-        </ion-fab>
-      </ion-col>
-    </ion-row>
-  </ion-card>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content position="bottom"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

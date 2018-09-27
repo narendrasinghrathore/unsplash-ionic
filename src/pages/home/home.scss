@@ -5,6 +5,16 @@
     border-radius: 4px;
     margin: 10px auto;
 }
-.searchDiv,.defaultPhotos{
+.ion-list-item-home{
+
+    padding: 0;
     
+    
+    .item-md.item-block .item-inner{
+        padding-right: 0;
+    }
+    .label-md {
+        margin: 0;  
+    }
+
 }
