@@ -116,6 +116,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   onOrderBy(value: any) {
     this.selectedOption = value;
+    this.photosList = [];
     this.getPhotos(1);
   }
 }

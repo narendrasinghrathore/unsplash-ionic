@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      <ion-select [selectOptions]="selectOptions" (ionChange)="onOrderBy($event)" [(ngModel)]="selectedOption" okText="Okay" cancelText="Dismiss">
+    <ion-title> 
+      <ion-select [selectedText]="'ORDER BY: '+ (selectedOption | uppercase)" [selectOptions]="selectOptions" (ionChange)="onOrderBy($event)" [(ngModel)]="selectedOption" okText="Okay" cancelText="Dismiss">
         <ion-option *ngFor="let item of orderByOptions" [value]="item">
           {{item | uppercase}}
         </ion-option>
