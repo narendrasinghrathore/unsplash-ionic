@@ -1,8 +1,10 @@
 {
   "name": "unsplash",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "ionic-angular",
-  "pro_id": "fe199e7e"
+  "pro_id": "fe199e7e",
+  "id": "fe199e7e"
 }

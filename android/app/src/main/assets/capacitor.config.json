@@ -1,0 +1,7 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "unsplash",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}
